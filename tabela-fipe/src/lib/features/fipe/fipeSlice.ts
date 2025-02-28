@@ -38,9 +38,7 @@ export const fetchModels = createAsyncThunk(
   async (brandCode: string, { rejectWithValue }) => {
     try {
       const res = await fetch(
-        `${
-          process.env.SITE_BASE_URL as string
-        }/api/tabela-fipe/models/${brandCode}`
+        `https://teste-mobiauto-gray.vercel.app/api/tabela-fipe/models/${brandCode}`
       );
       if (!res.ok) {
         throw new Error("Erro ao buscar modelos da marca, tente novamente.");
