@@ -1,7 +1,9 @@
 import { Roboto } from "next/font/google";
+import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import type { Metadata } from "next";
 
 import "./globals.css";
+import StoreProvider from "@/providers/store-provider";
 
 const robotoFont = Roboto({
   variable: "--font-roboto",
@@ -47,7 +49,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-br">
-      <body className={`${robotoFont.variable}`}>{children}</body>
+      <body className={`${robotoFont.variable}`}>
+        <StoreProvider>
+          <AppRouterCacheProvider>{children}</AppRouterCacheProvider>
+        </StoreProvider>
+      </body>
     </html>
   );
 }
