@@ -11,7 +11,7 @@ import {
   Typography
 } from "@mui/material";
 
-export default function Resultado() {
+export default function Resultado(): React.JSX.Element {
   const { value, loading, valueError } = useAppSelector(
     (state: RootState) => state.fipe
   );
@@ -46,9 +46,19 @@ export default function Resultado() {
           justifyContent: "center"
         }}
       >
-        <Alert severity="error">
-          OPS! Ocorreu um problema na sua busca, tente novamente!
-        </Alert>
+        <Container
+          sx={{
+            height: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center"
+          }}
+          component="div"
+        >
+          <Alert severity="error">
+            OPS! Ocorreu um problema na sua busca, tente novamente!
+          </Alert>
+        </Container>
       </Box>
     );
   }
@@ -79,7 +89,15 @@ export default function Resultado() {
               sx={{ display: "flex", flexDirection: "column", gap: "16px" }}
             >
               <Price price={value?.Valor ?? ""} />
-              <Typography sx={{ color: "#757575" }} fontSize={16}>
+              <Typography
+                sx={{
+                  color: "#757575",
+                  "@media (min-width: 768px)": {
+                    fontSize: "16px"
+                  }
+                }}
+                fontSize={12}
+              >
                 Este é o preço de compra do veículo
               </Typography>
             </Box>

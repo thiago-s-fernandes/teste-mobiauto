@@ -8,7 +8,7 @@ export default function StoreProvider({
   children
 }: {
   children: React.ReactNode;
-}) {
+}): React.JSX.Element {
   const storeRef = useRef<AppStore | null>(null);
   if (!storeRef.current) {
     storeRef.current = store();

@@ -21,7 +21,7 @@ async function fetchBrands(): Promise<FipeBrands[]> {
   }
 }
 
-export default async function Busca() {
+export default async function Busca(): Promise<React.JSX.Element> {
   const brands = await fetchBrands();
 
   return (
