@@ -11,8 +11,6 @@ import {
   Typography
 } from "@mui/material";
 
-import "react-loading-skeleton/dist/skeleton.css";
-
 export default function Resultado() {
   const { value, loading, valueError } = useAppSelector(
     (state: RootState) => state.fipe
