@@ -72,8 +72,7 @@ Essas rotas fazem requisições para a API externa da Tabela Fipe e retornam os 
 
    ```env
    API_FIPE_BASE_URL=https://parallelum.com.br/fipe/api/v1/carros/marcas
-   NEXT_PUBLIC_SITE_DEV_URL=http://localhost:3000
-   NEXT_PUBLIC_SITE_PROD_URL=https://meusite.com
+   SITE_BASE_URL=http://localhost:3000
    ```
 
 4. Execute o projeto em ambiente de desenvolvimento:

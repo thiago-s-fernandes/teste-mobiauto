@@ -2,11 +2,12 @@ import Form from "@/components/form/form";
 import Header from "@/components/header/header";
 import { FipeBrands } from "@/types/fipe";
 import { Box, Container } from "@mui/material";
-import { BASE_URL } from "@/constants";
 
 async function fetchBrands(): Promise<FipeBrands[]> {
   try {
-    const res = await fetch(`${BASE_URL}/api/tabela-fipe/brands`);
+    const res = await fetch(
+      `${process.env.SITE_BASE_URL as string}/api/tabela-fipe/brands`
+    );
 
     if (!res.ok) {
       throw new Error("Erro ao buscar marcas");
