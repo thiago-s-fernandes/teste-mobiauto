@@ -1,9 +1,10 @@
+import StoreProvider from "@/providers/store-provider";
 import { Roboto } from "next/font/google";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
+import { BASE_URL } from "@/constants";
 import type { Metadata } from "next";
 
 import "./globals.css";
-import StoreProvider from "@/providers/store-provider";
 
 const robotoFont = Roboto({
   variable: "--font-roboto",
@@ -12,19 +13,13 @@ const robotoFont = Roboto({
   display: "swap"
 });
 
-const SITE_URL = new URL(
-  process.env.NODE_ENV === "development"
-    ? (process.env.NEXT_PUBLIC_SITE_DEV_URL as string)
-    : (process.env.NEXT_PUBLIC_SITE_PROD_URL as string)
-);
-
 export const metadata: Metadata = {
-  metadataBase: SITE_URL,
+  metadataBase: new URL(BASE_URL),
   title: "Tabela Fipe - Consulte Preços de Veículos",
   description:
     "Consulte valores de carros, motos e caminhões na Tabela Fipe de forma rápida e prática.",
   openGraph: {
-    url: SITE_URL,
+    url: new URL(BASE_URL),
     locale: "pt_BR",
     siteName: "Tabela Fipe Online",
     title: "Tabela Fipe - Consulte Preços de Veículos",
