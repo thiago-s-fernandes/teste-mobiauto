@@ -2,7 +2,12 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Autocomplete, TextField, Button } from "@mui/material";
+import {
+  Autocomplete,
+  TextField,
+  Button,
+  CircularProgress
+} from "@mui/material";
 import { RootState, useAppDispatch, useAppSelector } from "@/lib/store";
 import {
   setSelectedBrand,
@@ -55,16 +60,11 @@ export default function Form({ brands }: Props): React.JSX.Element {
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
 
-    if (!selectedBrand || !selectedModel || !selectedYear) {
-      // Ajustar
-      return;
-    }
-
     dispatch(
       fetchValue({
-        brandCode: selectedBrand.codigo,
-        modelCode: selectedModel.codigo,
-        yearCode: selectedYear.codigo
+        brandCode: selectedBrand?.codigo ?? "",
+        modelCode: selectedModel?.codigo ?? "",
+        yearCode: selectedYear?.codigo ?? ""
       })
     );
 
@@ -95,6 +95,7 @@ export default function Form({ brands }: Props): React.JSX.Element {
 
         <Autocomplete
           options={models?.modelos ?? []}
+          loading={loading}
           getOptionLabel={option => option.nome}
           value={selectedModel}
           noOptionsText="Nenhum modelo encontrado"
@@ -107,16 +108,18 @@ export default function Form({ brands }: Props): React.JSX.Element {
               label="Modelo"
               variant="outlined"
               fullWidth
-              disabled={loading || !selectedBrand}
               error={!!modelsError}
               helperText={modelsError}
             />
           )}
-          sx={{ width: "100%" }}
+          sx={{
+            width: "100%"
+          }}
         />
 
         {selectedModel && (
           <Autocomplete
+            loading={loading}
             options={years}
             getOptionLabel={option => option.nome}
             noOptionsText="Nenhum ano encontrado"
@@ -133,7 +136,9 @@ export default function Form({ brands }: Props): React.JSX.Element {
                 helperText={yearsError}
               />
             )}
-            sx={{ width: "100%" }}
+            sx={{
+              width: "100%"
+            }}
             disabled={loading || !selectedModel}
           />
         )}
@@ -142,8 +147,21 @@ export default function Form({ brands }: Props): React.JSX.Element {
           type="submit"
           variant="contained"
           disabled={loading || !selectedYear}
+          sx={{
+            height: "40px",
+            fontSize: "14px",
+            fontWeight: 500,
+            textTransform: "unset",
+            minWidth: "185px",
+            "@media (min-width: 768px)": {
+              fontSize: "16px",
+              width: "fit-content",
+              height: "48px",
+              padding: "0 32px"
+            }
+          }}
         >
-          Consultar preço
+          {loading ? <CircularProgress size={24} /> : "Consultar preço"}
         </Button>
       </S.Form>
     </S.ContainerForm>

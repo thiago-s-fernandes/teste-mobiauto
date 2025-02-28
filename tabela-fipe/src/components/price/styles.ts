@@ -12,7 +12,13 @@ export const PriceContainer = styled("div")`
 
 export const PriceText = styled("p")`
   color: #ffffff;
-  font-size: 34px;
+  font-size: 20px;
   font-weight: 700;
-  line-height: 42px;
+  line-height: 24px;
+
+  @media (min-width: 768px) {
+    font-size: 34px;
+    font-weight: 700;
+    line-height: 42px;
+  }
 `;
