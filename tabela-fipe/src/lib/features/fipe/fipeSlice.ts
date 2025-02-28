@@ -38,7 +38,7 @@ export const fetchModels = createAsyncThunk(
   async (brandCode: string, { rejectWithValue }) => {
     try {
       const res = await fetch(
-        `https://teste-mobiauto-gray.vercel.app/api/tabela-fipe/models/${brandCode}`
+        `${process.env.SITE_BASE_URL}/api/tabela-fipe/models/${brandCode}`
       );
       if (!res.ok) {
         throw new Error("Erro ao buscar modelos da marca, tente novamente.");
@@ -61,7 +61,7 @@ export const fetchYears = createAsyncThunk(
   ) => {
     try {
       const res = await fetch(
-        `https://teste-mobiauto-gray.vercel.app/api/tabela-fipe/years/${brandCode}/${modelCode}`
+        `${process.env.SITE_BASE_URL}/api/tabela-fipe/years/${brandCode}/${modelCode}`
       );
 
       if (!res.ok) {
@@ -90,7 +90,7 @@ export const fetchValue = createAsyncThunk(
   ) => {
     try {
       const res = await fetch(
-        `https://teste-mobiauto-gray.vercel.app/api/tabela-fipe/value/${brandCode}/${modelCode}/${yearCode}`
+        `${process.env.SITE_BASE_URL}/api/tabela-fipe/value/${brandCode}/${modelCode}/${yearCode}`
       );
 
       if (!res.ok) {
