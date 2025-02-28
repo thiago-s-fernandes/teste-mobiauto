@@ -15,8 +15,7 @@ async function fetchBrands(): Promise<FipeBrands[]> {
     const data = await res.json();
 
     return data;
-  } catch (error) {
-    console.error({ error });
+  } catch {
     return [];
   }
 }
