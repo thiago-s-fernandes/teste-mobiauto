@@ -61,9 +61,7 @@ export const fetchYears = createAsyncThunk(
   ) => {
     try {
       const res = await fetch(
-        `${
-          process.env.SITE_BASE_URL as string
-        }/api/tabela-fipe/years/${brandCode}/${modelCode}`
+        `https://teste-mobiauto-gray.vercel.app/api/tabela-fipe/years/${brandCode}/${modelCode}`
       );
 
       if (!res.ok) {
@@ -92,9 +90,7 @@ export const fetchValue = createAsyncThunk(
   ) => {
     try {
       const res = await fetch(
-        `${
-          process.env.SITE_BASE_URL as string
-        }/api/tabela-fipe/value/${brandCode}/${modelCode}/${yearCode}`
+        `https://teste-mobiauto-gray.vercel.app/api/tabela-fipe/value/${brandCode}/${modelCode}/${yearCode}`
       );
 
       if (!res.ok) {

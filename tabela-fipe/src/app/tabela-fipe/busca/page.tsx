@@ -6,7 +6,7 @@ import { Box, Container } from "@mui/material";
 async function fetchBrands(): Promise<FipeBrands[]> {
   try {
     const res = await fetch(
-      `${process.env.SITE_BASE_URL as string}/api/tabela-fipe/brands`
+      `https://teste-mobiauto-gray.vercel.app/api/tabela-fipe/brands`
     );
 
     if (!res.ok) {
