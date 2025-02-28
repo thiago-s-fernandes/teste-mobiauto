@@ -1,36 +1,94 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Claro! Aqui está o README atualizado, incluindo a parte sobre a estrutura da API dentro da pasta `/app`:
 
-## Getting Started
+---
 
-First, run the development server:
+# Tabela Fipe
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+Este projeto é uma aplicação web construída com **Next.js 15**, **TypeScript** e **Node.js 20**. Ele permite consultar a Tabela Fipe de veículos, trazendo informações sobre marcas, modelos e preços de carros.
+
+## Tecnologias Utilizadas
+
+- **Next.js 15**: Framework React para aplicações web com renderização no lado do servidor (SSR) e geração de sites estáticos (SSG).
+- **TypeScript**: Superset do JavaScript para adicionar tipagem estática.
+- **Node.js 20**: Ambiente de execução JavaScript no servidor.
+- **Emotion**: Biblioteca de estilização CSS-in-JS.
+- **MUI**: Componentes de interface de usuário baseados em Material Design.
+- **Redux Toolkit**: Para gerenciamento de estado de forma eficiente.
+
+## Estrutura de Diretórios
+
+```
+tabela-fipe/
+│
+├── public/                  # Arquivos públicos estáticos
+├── src/                     # Código fonte
+│   ├── app/                 # Estrutura de rotas e layouts do Next.js
+│   │   └── api/             # APIs internas do Next.js
+│   │       ├── brands/      # Rota para listar marcas de veículos
+│   │       ├── models/      # Rota para listar modelos por marca
+│   │       ├── value/       # Rota para consultar valores por modelo e ano
+│   │       └── years/       # Rota para listar anos de um modelo específico
+│   ├── components/          # Componentes reutilizáveis
+│   ├── constants/           # Constantes e valores fixos
+│   ├── lib/                 # Funções utilitárias e helpers
+│   ├── providers/           # Provedores de contexto para o app
+│   ├── types/               # Tipos e interfaces TypeScript
+│   ├── middleware.ts        # Middleware para funções customizadas
+│
+├── .env                     # Variáveis de ambiente
+├── .nvmrc                   # Versão do Node.js
+└── package.json             # Dependências e scripts do projeto
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### APIs
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Dentro da pasta `/src/app/api`, estão localizadas as rotas da API que fornecem os dados necessários para a consulta à Tabela Fipe. As principais rotas são:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **`/api/brands`**: Retorna a lista de marcas de veículos disponíveis.
+- **`/api/models/[brandId]`**: Retorna os modelos de veículos para uma marca específica.
+- **`/api/value/[brandId]/[modelId]/[yearId]`**: Retorna o valor de um modelo de carro para um ano específico.
+- **`/api/years/[brandId]/[modelId]`**: Retorna os anos disponíveis para um modelo de carro específico.
 
-## Learn More
+Essas rotas fazem requisições para a API externa da Tabela Fipe e retornam os dados de forma otimizada, aproveitando as funcionalidades do Next.js para gerar as respostas rapidamente.
 
-To learn more about Next.js, take a look at the following resources:
+## Instalação
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Clone o repositório:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+   ```bash
+   git clone https://github.com/thiago-s-fernandes/teste-mobiauto.git
+   cd tabela-fipe
+   ```
 
-## Deploy on Vercel
+2. Instale as dependências:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+   ```bash
+   npm install
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+3. Configure as variáveis de ambiente:
+
+   Crie um arquivo `.env` na raiz do projeto com o seguinte conteúdo:
+
+   ```env
+   API_FIPE_BASE_URL=https://parallelum.com.br/fipe/api/v1/carros/marcas
+   NEXT_PUBLIC_SITE_DEV_URL=http://localhost:3000
+   NEXT_PUBLIC_SITE_PROD_URL=https://meusite.com
+   ```
+
+4. Execute o projeto em ambiente de desenvolvimento:
+
+   ```bash
+   npm run dev
+   ```
+
+## Scripts
+
+- **`npm run dev`**: Inicia o servidor de desenvolvimento com TurboPack.
+- **`npm run build`**: Compila o projeto para produção.
+- **`npm run start`**: Inicia o servidor de produção.
+- **`npm run lint`**: Executa a verificação de linting no código.
+
+## Licença
+
+Este projeto é licenciado sob a [MIT License](LICENSE).
