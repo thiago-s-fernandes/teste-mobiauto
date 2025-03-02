@@ -132,9 +132,10 @@ const fipeSlice = createSlice({
     setLoading(state, action: PayloadAction<boolean>) {
       state.loading = action.payload;
     },
-
-    resetFipeState(state) {
-      Object.assign(state, initialState);
+    resetSelections(state) {
+      state.selections.brand = null;
+      state.selections.model = null;
+      state.selections.year = null;
     }
   },
   extraReducers: builder => {
@@ -174,11 +175,19 @@ const fipeSlice = createSlice({
         state.data.value = action.payload;
         state.errors.value = null;
         state.loading = false;
+
+        // Reset data
+        state.data.models = null;
+        state.data.years = null;
       })
       .addCase(fetchValue.rejected, (state, action) => {
         state.data.value = null;
         state.errors.value = action.payload as string;
         state.loading = false;
+
+        // Reset data
+        state.data.models = null;
+        state.data.years = null;
       });
   }
 });
@@ -187,8 +196,8 @@ export const {
   setSelectedBrand,
   setSelectedModel,
   setSelectedYear,
-  resetFipeState,
-  setLoading
+  setLoading,
+  resetSelections
 } = fipeSlice.actions;
 
 export const fipeReducer = fipeSlice.reducer;

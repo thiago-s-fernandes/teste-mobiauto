@@ -2,7 +2,9 @@
 
 import Header from "@/components/header/header";
 import Price from "@/components/price/price";
-import { useAppSelector, RootState } from "@/lib/store";
+import { useEffect } from "react";
+import { resetSelections } from "@/lib/features/fipe/fipeSlice";
+import { useAppSelector, RootState, useAppDispatch } from "@/lib/store";
 import {
   Alert,
   Box,
@@ -12,11 +14,16 @@ import {
 } from "@mui/material";
 
 export default function Resultado(): React.JSX.Element {
+  const dispatch = useAppDispatch();
   const {
     data: { value },
     errors: { value: valueError },
     loading
   } = useAppSelector((state: RootState) => state.fipe);
+
+  useEffect(() => {
+    dispatch(resetSelections());
+  }, [dispatch]);
 
   if (loading) {
     return (
