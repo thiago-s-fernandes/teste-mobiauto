@@ -68,9 +68,7 @@ export default function Form({ brands }: Props): React.JSX.Element {
       })
     );
 
-    router.push(
-      `/tabela-fipe/resultado/${selectedBrand?.codigo}/${selectedModel?.codigo}/${selectedYear?.codigo}`
-    );
+    router.push(`/tabela-fipe/resultado`);
   };
 
   return (

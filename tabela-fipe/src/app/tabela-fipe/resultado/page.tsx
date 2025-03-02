@@ -56,7 +56,7 @@ export default function Resultado(): React.JSX.Element {
           component="div"
         >
           <Alert severity="error">
-            OPS! Ocorreu um problema na sua busca, tente novamente!
+            OPS! Ocorreu um problema no seu resultado, tente novamente!
           </Alert>
         </Container>
       </Box>
