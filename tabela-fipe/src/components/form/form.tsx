@@ -15,8 +15,7 @@ import {
   setSelectedYear,
   fetchModels,
   fetchYears,
-  fetchValue,
-  resetFipeState
+  fetchValue
 } from "@/lib/features/fipe/fipeSlice";
 import type { FipeBrands } from "@/types/fipe";
 
@@ -41,10 +40,6 @@ export default function Form({ brands }: Props): React.JSX.Element {
     errors: { models: modelsError, years: yearsError },
     loading
   } = useAppSelector((state: RootState) => state.fipe);
-
-  useEffect(() => {
-    dispatch(resetFipeState());
-  }, [dispatch]);
 
   useEffect(() => {
     if (selectedBrand) {
@@ -74,6 +69,8 @@ export default function Form({ brands }: Props): React.JSX.Element {
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
 
+    formSubmitted.current = true;
+
     dispatch(
       fetchValue({
         brandCode: selectedBrand?.codigo ?? "",
@@ -81,8 +78,6 @@ export default function Form({ brands }: Props): React.JSX.Element {
         yearCode: selectedYear?.codigo ?? ""
       })
     );
-
-    router.push(`/tabela-fipe/resultado`);
   };
 
   return (
@@ -168,7 +163,11 @@ export default function Form({ brands }: Props): React.JSX.Element {
             }
           }}
         >
-          {loading ? <CircularProgress size={24} /> : "Consultar preço"}
+          {selectedYear && loading ? (
+            <CircularProgress size={24} />
+          ) : (
+            "Consultar preço"
+          )}
         </Button>
       </S.Form>
     </S.ContainerForm>
