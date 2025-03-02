@@ -1,7 +1,3 @@
-Claro! Aqui está o README atualizado, incluindo a parte sobre a estrutura da API dentro da pasta `/app`:
-
----
-
 # Tabela Fipe
 
 Este projeto é uma aplicação web construída com **Next.js 15**, **TypeScript** e **Node.js 20**. Ele permite consultar a Tabela Fipe de veículos, trazendo informações sobre marcas, modelos e preços de carros.
