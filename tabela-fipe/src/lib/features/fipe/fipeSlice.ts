@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import { fetchFromAPI } from "@/utils/fetch";
 import type {
   FipeBase,
   FipeBrands,
@@ -8,78 +9,82 @@ import type {
 } from "@/types/fipe";
 
 interface FipeState {
-  selectedBrand: FipeBase | null;
-  selectedModel: FipeBase | null;
-  selectedYear: FipeBase | null;
-  models: FipeModels | null;
-  modelsError: string | null;
-  years: FipeYears[];
-  yearsError: string | null;
-  value: FipeValue | null;
-  valueError: string | null;
+  selections: {
+    brand: FipeBase | null;
+    model: FipeBase | null;
+    year: FipeBase | null;
+  };
+  data: {
+    models: FipeModels | null;
+    years: FipeYears[] | null;
+    value: FipeValue | null;
+  };
+  errors: {
+    models: string | null;
+    years: string | null;
+    value: string | null;
+  };
   loading: boolean;
 }
 
 const initialState: FipeState = {
-  selectedBrand: null,
-  selectedModel: null,
-  selectedYear: null,
-  models: null,
-  modelsError: null,
-  years: [],
-  yearsError: null,
-  value: null,
-  valueError: null,
+  selections: {
+    brand: null,
+    model: null,
+    year: null
+  },
+  data: {
+    models: null,
+    years: null,
+    value: null
+  },
+  errors: {
+    models: null,
+    years: null,
+    value: null
+  },
   loading: false
 };
 
+enum FipeActions {
+  FetchModels = "fipe/fetchModels",
+  FetchYears = "fipe/fetchYears",
+  FetchValue = "fipe/fetchValue"
+}
+
 export const fetchModels = createAsyncThunk(
-  "fipe/fetchModels",
+  FipeActions.FetchModels,
   async (brandCode: string, { rejectWithValue }) => {
     try {
-      const res = await fetch(
-        `${process.env.SITE_BASE_URL}/api/tabela-fipe/models/${brandCode}`
+      return await fetchFromAPI<FipeModels>(
+        `models/${brandCode}`,
+        "Erro ao buscar modelos da marca, tente novamente."
       );
-      if (!res.ok) {
-        throw new Error("Erro ao buscar modelos da marca, tente novamente.");
-      }
-      const data: FipeModels = await res.json();
-      return data;
     } catch (error) {
-      return rejectWithValue(
-        error instanceof Error ? error.message : "Erro na busca"
-      );
+      return rejectWithValue(error);
     }
   }
 );
 
 export const fetchYears = createAsyncThunk(
-  "fipe/fetchYears",
+  FipeActions.FetchYears,
   async (
     { brandCode, modelCode }: { brandCode: string; modelCode: string },
     { rejectWithValue }
   ) => {
     try {
-      const res = await fetch(
-        `${process.env.SITE_BASE_URL}/api/tabela-fipe/years/${brandCode}/${modelCode}`
+      return await fetchFromAPI<FipeYears[]>(
+        `years/${brandCode}/${modelCode}`,
+        "Erro ao buscar anos do modelo, tente novamente."
       );
-
-      if (!res.ok) {
-        throw new Error("Erro ao buscar anos do modelo, tente novamente.");
-      }
-
-      const data: FipeYears[] = await res.json();
-      return data;
     } catch (error) {
-      return rejectWithValue(
-        error instanceof Error ? error.message : "Erro na busca"
-      );
+      return rejectWithValue(error);
     }
   }
 );
 
 export const fetchValue = createAsyncThunk(
-  "fipe/fetchValue",
+  FipeActions.FetchValue,
   async (
     {
       brandCode,
@@ -89,20 +94,12 @@ export const fetchValue = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      const res = await fetch(
-        `${process.env.SITE_BASE_URL}/api/tabela-fipe/value/${brandCode}/${modelCode}/${yearCode}`
+      return await fetchFromAPI<FipeValue>(
+        `value/${brandCode}/${modelCode}/${yearCode}`,
+        "Erro ao buscar o veículo, tente novamente."
       );
-
-      if (!res.ok) {
-        throw new Error("Erro ao buscar o carro, tente novamente.");
-      }
-
-      const data: FipeValue = await res.json();
-      return data;
     } catch (error) {
-      return rejectWithValue(
-        error instanceof Error ? error.message : "Erro na busca"
-      );
+      return rejectWithValue(error);
     }
   }
 );
@@ -112,72 +109,76 @@ const fipeSlice = createSlice({
   initialState,
   reducers: {
     setSelectedBrand(state, action: PayloadAction<FipeBrands | null>) {
-      state.selectedBrand = action.payload;
+      state.selections.brand = action.payload;
+      state.selections.model = null;
+      state.selections.year = null;
 
       if (action.payload === null) {
-        state.models = null;
-        state.years = [];
-        state.selectedModel = null;
+        state.data.models = null;
+        state.data.years = null;
       }
     },
     setSelectedModel(state, action: PayloadAction<FipeBase | null>) {
-      state.selectedModel = action.payload;
+      state.selections.model = action.payload;
+      state.selections.year = null;
 
       if (action.payload === null) {
-        state.years = [];
+        state.data.years = null;
       }
     },
     setSelectedYear(state, action: PayloadAction<FipeBase | null>) {
-      state.selectedYear = action.payload;
+      state.selections.year = action.payload;
     },
     setLoading(state, action: PayloadAction<boolean>) {
       state.loading = action.payload;
+    },
+
+    resetFipeState(state) {
+      Object.assign(state, initialState);
     }
   },
   extraReducers: builder => {
     builder
       .addCase(fetchModels.pending, state => {
         state.loading = true;
-        state.modelsError = null;
       })
       .addCase(fetchModels.fulfilled, (state, action) => {
-        state.models = action.payload;
+        state.data.models = action.payload;
         state.loading = false;
       })
       .addCase(fetchModels.rejected, (state, action) => {
+        state.data.models = null;
+        state.errors.models = action.payload as string;
         state.loading = false;
-        state.models = null;
-        state.modelsError = action.payload as string;
       });
 
     builder
       .addCase(fetchYears.pending, state => {
         state.loading = true;
-        state.yearsError = null;
       })
       .addCase(fetchYears.fulfilled, (state, action) => {
-        state.years = action.payload;
+        state.data.years = action.payload;
         state.loading = false;
       })
       .addCase(fetchYears.rejected, (state, action) => {
+        state.data.years = null;
+        state.errors.years = action.payload as string;
         state.loading = false;
-        state.years = [];
-        state.yearsError = action.payload as string;
       });
 
     builder
       .addCase(fetchValue.pending, state => {
         state.loading = true;
-        state.valueError = null;
       })
       .addCase(fetchValue.fulfilled, (state, action) => {
-        state.value = action.payload;
+        state.data.value = action.payload;
+        state.errors.value = null;
         state.loading = false;
       })
       .addCase(fetchValue.rejected, (state, action) => {
+        state.data.value = null;
+        state.errors.value = action.payload as string;
         state.loading = false;
-        state.value = null;
-        state.valueError = action.payload as string;
       });
   }
 });
@@ -186,6 +187,7 @@ export const {
   setSelectedBrand,
   setSelectedModel,
   setSelectedYear,
+  resetFipeState,
   setLoading
 } = fipeSlice.actions;
 
