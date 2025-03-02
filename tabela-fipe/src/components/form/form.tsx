@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import {
   Autocomplete,
@@ -15,7 +15,8 @@ import {
   setSelectedYear,
   fetchModels,
   fetchYears,
-  fetchValue
+  fetchValue,
+  resetFipeState
 } from "@/lib/features/fipe/fipeSlice";
 import type { FipeBrands } from "@/types/fipe";
 
@@ -28,17 +29,22 @@ interface Props {
 export default function Form({ brands }: Props): React.JSX.Element {
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const formSubmitted = useRef(false);
 
   const {
-    selectedBrand,
-    selectedModel,
-    selectedYear,
-    models,
-    modelsError,
-    years,
-    yearsError,
+    selections: {
+      brand: selectedBrand,
+      model: selectedModel,
+      year: selectedYear
+    },
+    data: { models, years, value },
+    errors: { models: modelsError, years: yearsError },
     loading
   } = useAppSelector((state: RootState) => state.fipe);
+
+  useEffect(() => {
+    dispatch(resetFipeState());
+  }, [dispatch]);
 
   useEffect(() => {
     if (selectedBrand) {
@@ -56,6 +62,14 @@ export default function Form({ brands }: Props): React.JSX.Element {
       );
     }
   }, [selectedModel, selectedBrand, dispatch]);
+
+  useEffect(() => {
+    if (value && !loading && formSubmitted.current) {
+      router.push(`/tabela-fipe/resultado`);
+
+      formSubmitted.current = false;
+    }
+  }, [value, router, loading]);
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -75,14 +89,11 @@ export default function Form({ brands }: Props): React.JSX.Element {
     <S.ContainerForm>
       <S.Form onSubmit={handleSubmit}>
         <Autocomplete
-          options={brands}
+          options={brands ?? []}
           getOptionLabel={option => option.nome}
           value={selectedBrand}
           noOptionsText="Nenhuma marca encontrada"
-          onChange={(_, newValue) => {
-            dispatch(setSelectedModel(null));
-            dispatch(setSelectedBrand(newValue ?? null));
-          }}
+          onChange={(_, newValue) => dispatch(setSelectedBrand(newValue))}
           renderInput={params => (
             <TextField {...params} label="Marca" variant="outlined" fullWidth />
           )}
@@ -97,9 +108,7 @@ export default function Form({ brands }: Props): React.JSX.Element {
           getOptionLabel={option => option.nome}
           value={selectedModel}
           noOptionsText="Nenhum modelo encontrado"
-          onChange={(_, newValue) =>
-            dispatch(setSelectedModel(newValue ?? null))
-          }
+          onChange={(_, newValue) => dispatch(setSelectedModel(newValue))}
           renderInput={params => (
             <TextField
               {...params}
@@ -117,13 +126,13 @@ export default function Form({ brands }: Props): React.JSX.Element {
 
         {selectedModel && (
           <Autocomplete
+            options={years ?? []}
             loading={loading}
-            options={years}
             getOptionLabel={option => option.nome}
             noOptionsText="Nenhum ano encontrado"
-            onChange={(_, newValue) =>
-              dispatch(setSelectedYear(newValue ?? null))
-            }
+            onChange={(_, newValue) => {
+              dispatch(setSelectedYear(newValue));
+            }}
             renderInput={params => (
               <TextField
                 {...params}

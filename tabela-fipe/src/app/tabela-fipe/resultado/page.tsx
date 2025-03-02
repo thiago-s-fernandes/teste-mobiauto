@@ -12,9 +12,11 @@ import {
 } from "@mui/material";
 
 export default function Resultado(): React.JSX.Element {
-  const { value, loading, valueError } = useAppSelector(
-    (state: RootState) => state.fipe
-  );
+  const {
+    data: { value },
+    errors: { value: valueError },
+    loading
+  } = useAppSelector((state: RootState) => state.fipe);
 
   if (loading) {
     return (
