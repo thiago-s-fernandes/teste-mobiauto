@@ -150,6 +150,7 @@ export default function Form({ brands }: Props): React.JSX.Element {
           variant="contained"
           disabled={loading || !selectedYear}
           sx={{
+            background: "#5D00BF",
             height: "40px",
             fontSize: "14px",
             fontWeight: 500,
