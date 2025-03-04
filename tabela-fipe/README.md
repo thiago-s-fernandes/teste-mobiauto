@@ -7,9 +7,8 @@ Este projeto é uma aplicação web construída com **Next.js 15**, **TypeScript
 - **Next.js 15**: Framework React para aplicações web com renderização no lado do servidor (SSR) e geração de sites estáticos (SSG).
 - **TypeScript**: Superset do JavaScript para adicionar tipagem estática.
 - **Node.js 20**: Ambiente de execução JavaScript no servidor.
-- **Emotion**: Biblioteca de estilização CSS-in-JS.
 - **MUI**: Componentes de interface de usuário baseados em Material Design.
-- **Redux Toolkit**: Para gerenciamento de estado de forma eficiente.
+- **Redux Toolkit**: Para gerenciamento de estado e utilização de contexto de forma eficiente.
 
 ## Estrutura de Diretórios
 
