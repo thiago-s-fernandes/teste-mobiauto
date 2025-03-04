@@ -19,11 +19,14 @@ tabela-fipe/
 ├── public/                  # Arquivos públicos estáticos
 ├── src/                     # Código fonte
 │   ├── app/                 # Estrutura de rotas e layouts do Next.js
-│   │   └── api/             # APIs internas do Next.js
-│   │       ├── brands/      # Rota para listar marcas de veículos
-│   │       ├── models/      # Rota para listar modelos por marca
-│   │       ├── value/       # Rota para consultar valores por modelo e ano
-│   │       └── years/       # Rota para listar anos de um modelo específico
+│   │   ├── api/             # APIs internas do Next.js
+│   │   │   ├── brands/      # Rota api para listar marcas de veículos
+│   │   │   ├── models/      # Rota api para listar modelos por marca
+│   │   │   ├── value/       # Rota api para consultar valores por modelo e ano
+│   │   │   └── years/       # Rota api para listar anos de um modelo específico
+│   │   ├── tabela-fipe/     # Rota Tabela Fipe
+│   │   │   ├── busca/       # Página de busca na Tabela FIPE
+│   │   │   └── resultado/   # Página de resultado da busca
 │   ├── components/          # Componentes reutilizáveis
 │   ├── constants/           # Constantes e valores fixos
 │   ├── lib/                 # Funções utilitárias e helpers
@@ -59,7 +62,7 @@ Essas rotas fazem requisições para a API externa da Tabela Fipe e retornam os 
 2. Instale as dependências:
 
    ```bash
-   npm install
+   pnpm install
    ```
 
 3. Configure as variáveis de ambiente:
